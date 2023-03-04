@@ -1,4 +1,5 @@
 using EasyUI.Tabs;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,10 @@ public class MainController : MonoBehaviour
     public List<GameObject> listTabCurrent = new List<GameObject>();
     public GameObject currentTab;
 
+
     private void Awake() => instance = this;
+
+
     public void Init()
     {
         GlobalValue.isAdmin = true;
@@ -23,7 +27,7 @@ public class MainController : MonoBehaviour
             {
                 listTabCurrent.Add(arrayTabAll[i]);
                 TabsUI.instance.GetTabBtns(0);
-            }
+            }            
         }
         else
         {
@@ -41,6 +45,9 @@ public class MainController : MonoBehaviour
     {
         Debug.Log("vl" + tabIndex);
     }
+
+
+
 
     private void OnDisable()
     {

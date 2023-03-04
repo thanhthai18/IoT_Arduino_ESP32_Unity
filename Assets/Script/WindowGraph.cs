@@ -7,14 +7,24 @@ public class WindowGraph : MonoBehaviour
 {
     private RectTransform graphContainer;
     [SerializeField] private Sprite circleSprite;
+    [SerializeField]
+    private DataLuongNuoc dataLuongNuocScriptableObject;
 
     private void Awake()
     {
-        graphContainer = transform.Find("graphContainer").GetComponent<RectTransform>();
 
-        List<int> valueList = new List<int>() { 5, 98, 56, 45, 30, 22, 17, 15, 13, 17, 25, 37, 40, 36, 33 };
-        ShowGraph(valueList);
-        Debug.Log("show graph");
+        graphContainer = transform.Find("graphContainer").GetComponent<RectTransform>();    
+    }
+
+    private void Start()
+    {
+        dataLuongNuocScriptableObject.CallEventDataLuongNuoc();
+
+    }
+
+    private void OnEnable()
+    {
+        dataLuongNuocScriptableObject.eventNhanDataLuongNuoc += HandleDataLuongNuoc;
     }
 
 
@@ -31,8 +41,9 @@ public class WindowGraph : MonoBehaviour
         return gameObject;
     }
 
-    private void ShowGraph(List<int> valueList)
+    private void ShowGraph(List<float> valueList)
     {
+
         float xSize = 100;
         float yMaxinum = 100;
         float graphHeight = graphContainer.sizeDelta.y;
@@ -43,7 +54,7 @@ public class WindowGraph : MonoBehaviour
             float xPosition = xSize + i * xSize;
             float yPosition = (valueList[i] / yMaxinum) * graphHeight;
             GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition));
-            if(lastCircleGameObject != null)
+            if (lastCircleGameObject != null)
             {
                 CreateDotConnection(lastCircleGameObject.GetComponent<RectTransform>().anchoredPosition
                     , circleGameObject.GetComponent<RectTransform>().anchoredPosition);
@@ -76,5 +87,15 @@ public class WindowGraph : MonoBehaviour
         float n = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         if (n < 0) n += 360;
         return n;
+    }
+
+    public void HandleDataLuongNuoc(List<float> listDataLuongNuoc)
+    {
+        ShowGraph(listDataLuongNuoc);
+    }
+
+    private void OnDisable()
+    {
+        dataLuongNuocScriptableObject.eventNhanDataLuongNuoc -= HandleDataLuongNuoc;
     }
 }

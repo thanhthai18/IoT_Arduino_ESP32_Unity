@@ -14,6 +14,9 @@ public class MainView : View
     public Button btnThemThietBi;
     public Button btnLogOut;
     public Text txtChucVu;
+    public Text txtTongTaiKhoan;
+    public Text txtTongThietBi;
+    public Text txtTongDuLieu;
 
     private void Awake() => instance = this;
     public override void Initialize()
