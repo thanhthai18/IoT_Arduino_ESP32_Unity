@@ -9,6 +9,7 @@ public abstract class WindowGraph : MonoBehaviour
     [SerializeField] public Sprite circleSprite;
     [SerializeField]
     public DataLuongNuoc dataLuongNuocScriptableObject;
+    [SerializeField] private Font fontValueUnit;
 
     public virtual void Awake()
     {
@@ -18,7 +19,6 @@ public abstract class WindowGraph : MonoBehaviour
     public virtual void Start()
     {
         dataLuongNuocScriptableObject.CallEventDataLuongNuoc();
-
     }
 
     public virtual void OnEnable()
@@ -65,7 +65,26 @@ public abstract class WindowGraph : MonoBehaviour
     //    }
     //}
 
+    public virtual void CreateUnitText(string txtValue, float xPos, float yPos)
+    {
+        GameObject text = new GameObject("valueUnit", typeof(Text));
+        text.transform.SetParent(graphContainer, false);
+        Text textComponent = text.GetComponent<Text>();
+        textComponent.text = txtValue;
+        textComponent.alignment = TextAnchor.MiddleCenter;
+        textComponent.resizeTextForBestFit = true;
+        textComponent.font = fontValueUnit;
+        RectTransform rectTransform = text.GetComponent<RectTransform>();
+        rectTransform.anchoredPosition = new Vector2(xPos, yPos);
+        rectTransform.sizeDelta = new Vector2(102, 40);
+        rectTransform.anchorMin = new Vector2(0, 0);
+        rectTransform.anchorMax = new Vector2(0, 0);
+    }
 
+    public virtual void CreateUnitTextY(Text txtValue)
+    {
+   
+    }
 
 
     public virtual void CreateDotConnection(Vector2 dotPositionA, Vector2 dotPositionB)

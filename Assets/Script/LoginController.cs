@@ -11,7 +11,6 @@ public class LoginController : MonoBehaviour
     private void Start()
     {
         LoginView.instance.btnLogin.onClick.AddListener(() => Login(inputEmailCurrent, inputPasswordCurrent));
-
     }
     public void Login(string _email, string _password)
     {

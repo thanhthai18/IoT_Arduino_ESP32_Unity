@@ -18,11 +18,7 @@ public class GraphTienTheoThang : WindowGraph
     {
         base.OnEnable();
     }
-
-    public GameObject CreateCircle(Vector2 anchoredPosition)
-    {
-        return base.CreateCircle(anchoredPosition);
-    }
+  
 
     public override void ShowGraph(List<float> valueList)
     {
@@ -33,12 +29,14 @@ public class GraphTienTheoThang : WindowGraph
 
         GameObject root = CreateCircle(new Vector2(0, 0));
         lastCircleGameObject = root;
-
+        int yearNum = 2015;
         for (int i = 0; i < valueList.Count; i++)
         {
             float xPosition = xSize + i * xSize;
             float yPosition = (valueList[i] / yMaxinum) * graphHeight;
             GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition));
+            CreateUnitText(yearNum++.ToString(), xPosition, -40);
+            CreateUnitText("300", -60, yPosition);
             if (lastCircleGameObject != null)
             {
                 CreateDotConnection(lastCircleGameObject.GetComponent<RectTransform>().anchoredPosition
@@ -47,21 +45,7 @@ public class GraphTienTheoThang : WindowGraph
             lastCircleGameObject = circleGameObject;
         }
     }
-
-    public void CreateDotConnection(Vector2 dotPositionA, Vector2 dotPositionB)
-    {
-        base.CreateDotConnection(dotPositionA, dotPositionB);
-    }
-
-    public float GetAngleFromVectorFloat(Vector2 dir)
-    {
-        return base.GetAngleFromVectorFloat(dir);
-    }
-
-    public void HandleDataLuongNuoc(List<float> listDataLuongNuoc)
-    {
-        base.HandleDataLuongNuoc(listDataLuongNuoc);
-    }
+   
 
     private void OnDisable()
     {

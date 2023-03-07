@@ -6356,6 +6356,7 @@ MonoBehaviour:
   graphContainer: {fileID: 0}
   circleSprite: {fileID: 21300000, guid: ce8637774427361428d758c6c49d138b, type: 3}
   dataLuongNuocScriptableObject: {fileID: 11400000, guid: 9311ebfd46a566e40be32378af08d649, type: 2}
+  fontValueUnit: {fileID: 12800000, guid: a4f32b2c8e673a441a4a26270fe53e05, type: 3}
 --- !u!1 &1248535537
 GameObject:
   m_ObjectHideFlags: 0
@@ -8408,6 +8409,7 @@ MonoBehaviour:
   graphContainer: {fileID: 0}
   circleSprite: {fileID: 21300000, guid: e019cd8c6a958a74bb226a0fd85030d6, type: 3}
   dataLuongNuocScriptableObject: {fileID: 11400000, guid: 531ce38314c8a47458135c73f5478fee, type: 2}
+  fontValueUnit: {fileID: 12800000, guid: a4f32b2c8e673a441a4a26270fe53e05, type: 3}
 --- !u!1001 &1776641989
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8878,6 +8880,7 @@ MonoBehaviour:
   graphContainer: {fileID: 0}
   circleSprite: {fileID: 21300000, guid: 64f5428e485e0204db94d129eab4847f, type: 3}
   dataLuongNuocScriptableObject: {fileID: 11400000, guid: 0c76d848d4acf3841acde871541debbb, type: 2}
+  fontValueUnit: {fileID: 12800000, guid: a4f32b2c8e673a441a4a26270fe53e05, type: 3}
 --- !u!1 &1866182852
 GameObject:
   m_ObjectHideFlags: 0
