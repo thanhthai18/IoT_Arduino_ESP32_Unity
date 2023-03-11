@@ -24,4 +24,14 @@ public class mqttController : MonoBehaviour
         Debug.Log("Event Fired. The message, from Object " + nameController + " is = " + newMsg);
         txtTest.text = newMsg;
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            _eventSender.topicPublish = "vuivui";
+            _eventSender.messagePublish = "myTokenDevice";
+            _eventSender.Publish();
+        }
+    }
 }
