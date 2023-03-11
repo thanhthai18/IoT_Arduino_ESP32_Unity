@@ -23,15 +23,15 @@ public class GraphLuongNuocTheoNam : WindowGraph
 
     public override void ShowGraph(List<float> valueList)
     {    
-        float xSize = graphContainer.rect.width / dataLuongNuocScriptableObject.tongSoThangData;
-        float yMaxinum = dataLuongNuocScriptableObject.valueLuongNuocMax;
+        float xSize = graphContainer.rect.width / dataLuongNuocScriptableObject.numDataX;
+        float yMaxinum = dataLuongNuocScriptableObject.valueMaxY;
         float graphHeight = graphContainer.sizeDelta.y;
         GameObject lastCircleGameObject = null;
 
         GameObject root = CreateCircle(new Vector2(0, 0));
         lastCircleGameObject = root;
 
-        int yearNum = 2019;
+        int yearNum = dataLuongNuocScriptableObject.yearStartForGraphYear;
 
         for (int i = 0; i < valueList.Count; i++)
         {
@@ -39,7 +39,7 @@ public class GraphLuongNuocTheoNam : WindowGraph
             float yPosition = (valueList[i] / yMaxinum) * graphHeight;
             GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition));
             CreateUnitText(yearNum++.ToString(), xPosition, -40);
-            CreateUnitText("300", -60, yPosition);
+            CreateUnitText(valueList[i].ToString(), -60, yPosition);
             if (lastCircleGameObject != null)
             {
                 CreateDotConnection(lastCircleGameObject.GetComponent<RectTransform>().anchoredPosition
@@ -47,6 +47,7 @@ public class GraphLuongNuocTheoNam : WindowGraph
             }
             lastCircleGameObject = circleGameObject;
         }
+        //graphContainer.sizeDelta = new Vector2(graphContainer.rect.width + 20, graphContainer.rect.height);
     }
     
 

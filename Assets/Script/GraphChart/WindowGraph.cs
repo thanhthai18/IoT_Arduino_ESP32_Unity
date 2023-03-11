@@ -26,6 +26,18 @@ public abstract class WindowGraph : MonoBehaviour
         dataLuongNuocScriptableObject.eventNhanDataLuongNuoc += HandleDataLuongNuoc;
     }
 
+    public void DestroyChildNotBG(Transform t)
+    {
+        if(t.childCount > 1)
+        {
+            for (int i = 1; i < t.childCount; i++)
+            {
+                Object.Destroy(t.GetChild(i).gameObject);
+            }
+        }
+        
+    }
+
 
     public GameObject CreateCircle(Vector2 anchoredPosition)
     {
