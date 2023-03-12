@@ -14,6 +14,7 @@ public class MainController : MonoBehaviour
     public GameObject currentTab;
 
 
+
     private void Awake() => instance = this;
 
 
@@ -37,8 +38,12 @@ public class MainController : MonoBehaviour
         }
 
         listTabCurrent.ForEach(s => s.SetActive(true));
-     
-        
+
+
+         RealtimeDB.instance.LoadDataUserAsync();
+       // t.Wait();
+       // Debug.Log(UserController.instance.listProfile.Count);
+
     }
 
     public void HandleOnTabClick(int tabIndex)

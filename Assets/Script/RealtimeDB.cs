@@ -13,7 +13,7 @@ public class RealtimeDB : MonoBehaviour
     public DependencyStatus dependencyStatus;
 
     public static event Action eventInitFirebaseThanhCong;
-
+    public UserController userController;
     private void Awake()
     {
         if (instance == null)
@@ -21,15 +21,16 @@ public class RealtimeDB : MonoBehaviour
             instance = this;
         }
 
-      
+
     }
 
-    
+
     private void Start()
     {
-        //Invoke(nameof(InitializeFirebase), 0.1f);
         InitializeFirebase();
-        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
+        userController = UserController.instance;
+        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+        {
             var dependencyStatus = task.Result;
             if (dependencyStatus == Firebase.DependencyStatus.Available)
             {
@@ -73,6 +74,7 @@ public class RealtimeDB : MonoBehaviour
         {
             reference = FirebaseDatabase.DefaultInstance.RootReference;
             eventInitFirebaseThanhCong?.Invoke();
+
             Debug.Log(reference);
 
         }
@@ -117,32 +119,80 @@ public class RealtimeDB : MonoBehaviour
         //});
     }
 
-    public void LoadData()
+    public void LoadDataUserAsync()
     {
-        //reference.Child("DonHang").GetValueAsync().ContinueWith(task =>
-        //{
-        //    if (task.IsCompleted)
-        //    {
-        //        DataSnapshot snapshot = task.Result;
-        //        if (snapshot.ChildrenCount > 1)
-        //        {
-        //            ListDonHang.instance.countDonHang = snapshot.ChildrenCount - 1;
-        //            for (int i = 1; i < snapshot.ChildrenCount; i++)
-        //            {
-        //                ListDonHang.instance.date_List.Add(snapshot.Child(i.ToString()).Child("date").GetValue(true).ToString());
-        //                ListDonHang.instance.diaChi_List.Add(snapshot.Child(i.ToString()).Child("diaChi").GetValue(true).ToString());
-        //                ListDonHang.instance.id_List.Add(snapshot.Child(i.ToString()).Child("id").GetValue(true).ToString());
-        //                ListDonHang.instance.listSanPham_List.Add(snapshot.Child(i.ToString()).Child("listSanPham").GetValue(true).ToString());
-        //                ListDonHang.instance.name_List.Add(snapshot.Child(i.ToString()).Child("name").GetValue(true).ToString());
-        //                ListDonHang.instance.phuongThuc_List.Add(snapshot.Child(i.ToString()).Child("phuongThuc").GetValue(true).ToString());
-        //                ListDonHang.instance.sdt_List.Add(snapshot.Child(i.ToString()).Child("sdt").GetValue(true).ToString());
-        //                ListDonHang.instance.thanhTien_List.Add(snapshot.Child(i.ToString()).Child("thanhTien").GetValue(true).ToString());
-        //                ListDonHang.instance.trangThai_List.Add(snapshot.Child(i.ToString()).Child("trangThai").GetValue(true).ToString());
-        //            }
-        //        }
+        reference.Child("User").Child("Profile").GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+                if (snapshot.ChildrenCount > 0)
+                {
+                    // Profile of User
+                    GlobalValue.countTaiKhoan = (int)snapshot.ChildrenCount;
+                    for (int i = 0; i < snapshot.ChildrenCount; i++)
+                    {
+                        Profile profile = new Profile();
+                        profile.idUser = int.Parse(snapshot.Child(i.ToString()).Key);
+                        profile.ROLE = snapshot.Child(i.ToString()).Child("ROLE").GetValue(true).ToString();
+                        profile.email = snapshot.Child(i.ToString()).Child("email").GetValue(true).ToString();
+                        profile.fullname = snapshot.Child(i.ToString()).Child("fullname").GetValue(true).ToString();
+                        profile.username = snapshot.Child(i.ToString()).Child("username").GetValue(true).ToString();
+                        profile.password = snapshot.Child(i.ToString()).Child("password").GetValue(true).ToString();
 
-        //    }
-        //});
+                        // Device of this profile
+                        List<Device> listDevice = new List<Device>();
+
+                        DataSnapshot databaseDevice = snapshot.Child(i.ToString()).Child("Device");
+                        for (int j = 0; j < databaseDevice.ChildrenCount; j++)
+                        {
+                            Device tmpDevice = new Device();
+                            tmpDevice.idDevice = int.Parse(databaseDevice.Child(j.ToString()).Key);
+                            tmpDevice.alive = int.Parse(databaseDevice.Child(i.ToString()).Child("alive").GetValue(true).ToString());
+                            tmpDevice.nameDevice = databaseDevice.Child(i.ToString()).Child("nameDevice").GetValue(true).ToString();
+                            tmpDevice.tokenAuth = databaseDevice.Child(i.ToString()).Child("tokenAuth").GetValue(true).ToString();
+                            tmpDevice.tokenCollectData = databaseDevice.Child(i.ToString()).Child("tokenCollectData").GetValue(true).ToString();
+
+                            //Data of this device
+                            Data dataDevice = new Data();
+                            dataDevice.value = int.Parse(databaseDevice.Child(j.ToString()).Child("data").Child("value").ToString());
+                            dataDevice.updateAt = DateTime.ParseExact(databaseDevice.Child(j.ToString()).Child("data").Child("updateAt").ToString(),
+                                "yyyy-MM-dd HH:mm:ss,fff", System.Globalization.CultureInfo.InvariantCulture);
+                            //"2009-05-08 14:40:52,531", "yyyy-MM-dd HH:mm:ss,fff", System.Globalization.CultureInfo.InvariantCulture
+
+                            tmpDevice.dataDevice = dataDevice;
+
+                            //Sensor of this device
+                            DataSnapshot databaseSensor = databaseDevice.Child("sensor");
+
+                            for (int z = 0; z < databaseSensor.ChildrenCount; z++)
+                            {
+                                Sensor tmpSensor = new Sensor();
+                                tmpSensor.idSensor = int.Parse(databaseSensor.Child(z.ToString()).Key);
+                                tmpSensor.nameSensor = databaseSensor.Child(z.ToString()).Child("nameSensor").GetValue(true).ToString();
+                                tmpSensor.dataSensor.value = int.Parse(databaseSensor.Child(z.ToString()).Child("data").Child("value").ToString());
+                                tmpSensor.dataSensor.updateAt = DateTime.ParseExact(databaseSensor.Child(z.ToString()).Child("data").Child("updateAt").ToString(),
+                                "yyyy-MM-dd HH:mm:ss,fff", System.Globalization.CultureInfo.InvariantCulture);
+
+
+                                tmpDevice.listSensor.Add(tmpSensor);
+                            }
+
+
+
+                            profile.listDevice.Add(tmpDevice);
+
+
+                            userController.listProfile.Add(profile);
+
+                        }
+                    }
+
+                    Debug.Log(userController.listProfile.Count);
+                }
+
+            }
+        });
     }
 
 
@@ -175,7 +225,7 @@ public class RealtimeDB : MonoBehaviour
                 {
                     for (int i = 0; i < snapshot.ChildrenCount; i++)
                     {
-                        listData.Add(float.Parse(snapshot.Child((i+1).ToString()).GetValue(true).ToString()));
+                        listData.Add(float.Parse(snapshot.Child((i + 1).ToString()).GetValue(true).ToString()));
                     }
                 }
             }

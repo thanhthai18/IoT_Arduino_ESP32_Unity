@@ -14,19 +14,19 @@ public class LoginController : MonoBehaviour
     }
     public void Login(string _email, string _password)
     {
-        User user = CheckAccount();
-        if(user == null)
-        {
-            LoginView.instance.txtThongBaoLogin.text = "Fail";
-        }
-        else
-        {
-            LoginView.instance.txtThongBaoLogin.text = "Successful";
-        }
+        //User user = CheckAccount();
+        //if(user == null)
+        //{
+        //    LoginView.instance.txtThongBaoLogin.text = "Fail";
+        //}
+        //else
+        //{
+        //    LoginView.instance.txtThongBaoLogin.text = "Successful";
+        //}
     }
-    public User CheckAccount()
-    {
-        User user = new User();
-        return user;
-    }
+    //public User CheckAccount()
+    //{
+    //    User user = new User();
+    //    return user;
+    //}
 }
