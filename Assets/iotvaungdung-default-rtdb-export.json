@@ -1,0 +1,88 @@
+{
+  "DataLuongNuoc": {
+    "2020": [
+      null,
+      0.3,
+      0.3,
+      0.3,
+      0.2,
+      0.4,
+      0.5,
+      0.4,
+      0.2,
+      0.3,
+      0.6,
+      0.5,
+      0.6
+    ],
+    "2021": [
+      null,
+      0.5,
+      0.4,
+      0.32,
+      0.5,
+      0.7,
+      0.3,
+      0.5,
+      0.4,
+      0.6,
+      0.2,
+      0.1,
+      0.5
+    ],
+    "2022": [
+      null,
+      0.1,
+      0.2,
+      0.1,
+      0.2,
+      0.1,
+      0.2,
+      0.1,
+      0.5,
+      0.4,
+      0.1,
+      0.2,
+      0.6
+    ]
+  },
+  "User": {
+    "Profile": [
+      {
+        "Device": [
+          {
+            "alive": "",
+            "data": {
+              "updateAt": "",
+              "value": ""
+            },
+            "nameDevice": "",
+            "sensor": [
+              {
+                "data": {
+                  "updateAt": "",
+                  "value": ""
+                },
+                "nameSensor": ""
+              },
+              {
+                "data": {
+                  "updateAt": "",
+                  "value": ""
+                },
+                "nameSensor": ""
+              }
+            ],
+            "tokenAuth": "",
+            "tokenCollectData": ""
+          }
+        ],
+        "ROLE": "ADMIN",
+        "email": "thaiht@gmail.com",
+        "fullname": "thanhthai",
+        "password": "thaiht",
+        "username": "thaiht"
+      }
+    ]
+  }
+}

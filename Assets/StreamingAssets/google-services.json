@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "329122210303",
+    "firebase_url": "https://iotvaungdung-default-rtdb.firebaseio.com",
+    "project_id": "iotvaungdung",
+    "storage_bucket": "iotvaungdung.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329122210303:android:90ef5e14dfdbe433f107ca",
+        "android_client_info": {
+          "package_name": "com.ThaiHT.ThaiHT"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "329122210303-mklh9er4gja5rk2po8mvugi4aag2hgd3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6IZ7NjyKQki9EvMqmLoAxFvMP9NjUo48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "329122210303-mklh9er4gja5rk2po8mvugi4aag2hgd3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

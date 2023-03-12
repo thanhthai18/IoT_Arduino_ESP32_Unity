@@ -30,7 +30,7 @@ public class GraphLuongNuocTheoThang : WindowGraph
     {
         DestroyChildNotBG(graphContainer.transform);
         dataLuongNuocScriptableObject.yearData = int.Parse(dropDownYear.options[dropDownYear.value].text);
-        dataLuongNuocScriptableObject.GetDataLuongNuocServer(dataLuongNuocScriptableObject.yearData);
+        dataLuongNuocScriptableObject.GetDataLuongNuocServerAsync(dataLuongNuocScriptableObject.yearData);
     }
 
     public override void ShowGraph(List<float> valueList)
