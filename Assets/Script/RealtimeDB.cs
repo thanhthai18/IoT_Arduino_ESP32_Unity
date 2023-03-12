@@ -5,6 +5,7 @@ using Firebase.Database;
 using System;
 using Firebase;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 public class RealtimeDB : MonoBehaviour
 {
@@ -119,9 +120,9 @@ public class RealtimeDB : MonoBehaviour
         //});
     }
 
-    public void LoadDataUserAsync()
+    public async Task LoadDataUserAsync()
     {
-        reference.Child("User").Child("Profile").GetValueAsync().ContinueWith(task =>
+        await reference.Child("User").Child("Profile").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsCompleted)
             {
@@ -130,10 +131,11 @@ public class RealtimeDB : MonoBehaviour
                 {
                     // Profile of User
                     GlobalValue.countTaiKhoan = (int)snapshot.ChildrenCount;
+                    Debug.Log(GlobalValue.countTaiKhoan);
                     for (int i = 0; i < snapshot.ChildrenCount; i++)
                     {
                         Profile profile = new Profile();
-                        profile.idUser = int.Parse(snapshot.Child(i.ToString()).Key);
+                        profile.idUser = snapshot.Child(i.ToString()).Key;
                         profile.ROLE = snapshot.Child(i.ToString()).Child("ROLE").GetValue(true).ToString();
                         profile.email = snapshot.Child(i.ToString()).Child("email").GetValue(true).ToString();
                         profile.fullname = snapshot.Child(i.ToString()).Child("fullname").GetValue(true).ToString();
@@ -147,32 +149,37 @@ public class RealtimeDB : MonoBehaviour
                         for (int j = 0; j < databaseDevice.ChildrenCount; j++)
                         {
                             Device tmpDevice = new Device();
-                            tmpDevice.idDevice = int.Parse(databaseDevice.Child(j.ToString()).Key);
-                            tmpDevice.alive = int.Parse(databaseDevice.Child(i.ToString()).Child("alive").GetValue(true).ToString());
-                            tmpDevice.nameDevice = databaseDevice.Child(i.ToString()).Child("nameDevice").GetValue(true).ToString();
-                            tmpDevice.tokenAuth = databaseDevice.Child(i.ToString()).Child("tokenAuth").GetValue(true).ToString();
-                            tmpDevice.tokenCollectData = databaseDevice.Child(i.ToString()).Child("tokenCollectData").GetValue(true).ToString();
+                            tmpDevice.idDevice = databaseDevice.Child(j.ToString()).Key;
+                            tmpDevice.alive = databaseDevice.Child(j.ToString()).Child("alive").GetValue(true).ToString();
+                            tmpDevice.nameDevice = databaseDevice.Child(j.ToString()).Child("nameDevice").GetValue(true).ToString();
+                            tmpDevice.tokenAuth = databaseDevice.Child(j.ToString()).Child("tokenAuth").GetValue(true).ToString();
+                            tmpDevice.tokenCollectData = databaseDevice.Child(j.ToString()).Child("tokenCollectData").GetValue(true).ToString();
 
                             //Data of this device
                             Data dataDevice = new Data();
-                            dataDevice.value = int.Parse(databaseDevice.Child(j.ToString()).Child("data").Child("value").ToString());
-                            dataDevice.updateAt = DateTime.ParseExact(databaseDevice.Child(j.ToString()).Child("data").Child("updateAt").ToString(),
-                                "yyyy-MM-dd HH:mm:ss,fff", System.Globalization.CultureInfo.InvariantCulture);
+                            dataDevice.value = databaseDevice.Child(j.ToString()).Child("data").Child("value").GetValue(true).ToString();
+                            //dataDevice.updateAt = DateTime.ParseExact(databaseDevice.Child(j.ToString()).Child("data").Child("updateAt").ToString(),
+                            //    "yyyy-MM-dd HH:mm:ss,fff", System.Globalization.CultureInfo.InvariantCulture);
+                            dataDevice.updateAt = databaseDevice.Child(j.ToString()).Child("data").Child("updateAt").GetValue(true).ToString();
+
                             //"2009-05-08 14:40:52,531", "yyyy-MM-dd HH:mm:ss,fff", System.Globalization.CultureInfo.InvariantCulture
 
                             tmpDevice.dataDevice = dataDevice;
 
-                            //Sensor of this device
-                            DataSnapshot databaseSensor = databaseDevice.Child("sensor");
+                            //    //Sensor of this device
+                            DataSnapshot databaseSensor = databaseDevice.Child(j.ToString()).Child("sensor");
 
+                           
                             for (int z = 0; z < databaseSensor.ChildrenCount; z++)
                             {
                                 Sensor tmpSensor = new Sensor();
-                                tmpSensor.idSensor = int.Parse(databaseSensor.Child(z.ToString()).Key);
+                                tmpSensor.idSensor = databaseSensor.Child(z.ToString()).Key;
                                 tmpSensor.nameSensor = databaseSensor.Child(z.ToString()).Child("nameSensor").GetValue(true).ToString();
-                                tmpSensor.dataSensor.value = int.Parse(databaseSensor.Child(z.ToString()).Child("data").Child("value").ToString());
-                                tmpSensor.dataSensor.updateAt = DateTime.ParseExact(databaseSensor.Child(z.ToString()).Child("data").Child("updateAt").ToString(),
-                                "yyyy-MM-dd HH:mm:ss,fff", System.Globalization.CultureInfo.InvariantCulture);
+                                tmpSensor.dataSensor.value = databaseSensor.Child(z.ToString()).Child("data").Child("value").GetValue(true).ToString();
+                                //tmpSensor.dataSensor.updateAt = DateTime.ParseExact(databaseSensor.Child(z.ToString()).Child("data").Child("updateAt").ToString(),
+                                //"yyyy-MM-dd HH:mm:ss,fff", System.Globalization.CultureInfo.InvariantCulture);
+                                tmpSensor.dataSensor.updateAt = databaseSensor.Child(z.ToString()).Child("data").Child("updateAt").GetValue(true).ToString();
+
 
 
                                 tmpDevice.listSensor.Add(tmpSensor);
@@ -183,15 +190,18 @@ public class RealtimeDB : MonoBehaviour
                             profile.listDevice.Add(tmpDevice);
 
 
-                            userController.listProfile.Add(profile);
 
                         }
+                        userController.listProfile.Add(profile);
                     }
 
-                    Debug.Log(userController.listProfile.Count);
+                    task.Dispose();
                 }
 
+
+
             }
+
         });
     }
 
@@ -216,7 +226,8 @@ public class RealtimeDB : MonoBehaviour
     {
         List<float> listData = new List<float>();
 
-        await reference.Child("DataLuongNuoc").Child(year.ToString()).GetValueAsync().ContinueWith(task =>
+
+        var t = reference.Child("DataLuongNuoc").Child(year.ToString()).GetValueAsync().ContinueWith(task =>
         {
             if (task.IsCompleted)
             {
@@ -228,9 +239,12 @@ public class RealtimeDB : MonoBehaviour
                         listData.Add(float.Parse(snapshot.Child((i + 1).ToString()).GetValue(true).ToString()));
                     }
                 }
+                task.Dispose();
             }
         });
 
+        await t;
+        t.Dispose();
         return listData;
 
     }

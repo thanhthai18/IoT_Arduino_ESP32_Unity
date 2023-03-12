@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class LoginController : MonoBehaviour
 {
+    public static LoginController instance;
     public string inputEmailCurrent;
     public string inputPasswordCurrent;
 
 
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
         LoginView.instance.btnLogin.onClick.AddListener(() => Login(inputEmailCurrent, inputPasswordCurrent));
@@ -23,6 +28,13 @@ public class LoginController : MonoBehaviour
         //{
         //    LoginView.instance.txtThongBaoLogin.text = "Successful";
         //}
+        
+    }
+    public bool CheckAdmin(string _email, string _password)
+    {
+        if (_email == "thaiht@gmail.com") return true;
+        else
+            return false;
     }
     //public User CheckAccount()
     //{

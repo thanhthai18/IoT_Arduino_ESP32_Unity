@@ -103,7 +103,8 @@ public abstract class WindowGraph : MonoBehaviour
     {
         GameObject gameObject = new GameObject("dotConnection", typeof(Image));
         gameObject.transform.SetParent(graphContainer, false);
-        gameObject.GetComponent<Image>().color = new Color(1, 1, 1, .5f);
+        gameObject.GetComponent<Image>().color = new Color(1,1,1,1);
+        gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, 2, gameObject.transform.localScale.z);
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
         Vector2 dir = (dotPositionB - dotPositionA).normalized;
         float distance = Vector2.Distance(dotPositionA, dotPositionB);

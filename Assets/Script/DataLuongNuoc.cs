@@ -57,6 +57,7 @@ public class DataLuongNuoc : ScriptableObject
                 await a;
                 listDataLuongNuoc = a.Result;
                 yearData = year;
+                a.Dispose();
                 break;
             case 2: // so tien theo thang
                 //if (year == 2020)
@@ -82,33 +83,37 @@ public class DataLuongNuoc : ScriptableObject
     public void GetDataLuongNuocServerAsync()
     {
         //luong nuoc theo nam
+        listDataTungNam.Clear();
         if (id == 0)
         {
             RealtimeDB.instance.reference.Child("DataLuongNuoc").GetValueAsync().ContinueWith(task =>
             {
-                if (task.IsCompleted)
-                {
-                    Debug.Log("deo vao noi day a");
-                    DataSnapshot snapshot = task.Result;
-                    Debug.Log(snapshot.Children.ToList()[0].Key);
-
+            if (task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+                Debug.Log(snapshot.Children.ToList().Count);
                     snapshot.Children.ToList().ForEach(s =>
                     {
-                        float max = 0;
+                        //float max = 0;
+                        //s.Children.ToList().ForEach(z =>
+                        //{
+                        //    if (float.Parse(z.Value.ToString()) > max)
+                        //    {
+                        //        max = float.Parse(z.Value.ToString());
+                        //    }
+
+                        //});
+                        float sum = 0;
                         s.Children.ToList().ForEach(z =>
                         {
-                            if (float.Parse(z.Value.ToString()) > max)
-                            {
-                                max = float.Parse(z.Value.ToString());
-                            }
+                            sum += float.Parse(z.Value.ToString());
 
                         });
-                        listDataTungNam.Add(max);
+
+                        listDataTungNam.Add(sum);
 
 
                     });
-
-                    Debug.Log(listDataTungNam.Count);
 
                     numDataX = (int)snapshot.ChildrenCount;
                     valueMaxY = listDataTungNam.Max();

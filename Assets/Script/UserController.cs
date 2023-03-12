@@ -23,21 +23,21 @@ public class UserController : MonoBehaviour
 
 public class Profile
 {
-    public int idUser;
+    public string idUser;
     public string ROLE;
     public string email;
     public string fullname;
     public string password;
     public string username;
-    public DateTime createTimeDate;
+    public string createTimeDate;
     public List<Device> listDevice = new List<Device>();
 
 }
 
 public class Device
 {
-    public int idDevice;
-    public int alive; // 0-1
+    public string idDevice;
+    public string alive; // 0-1
     public string nameDevice;
     public string tokenAuth;
     public string tokenCollectData;
@@ -47,13 +47,13 @@ public class Device
 
 public struct Data
 {
-    public DateTime updateAt;
-    public float value;
+    public string updateAt;
+    public string value;
 }
 
 public class Sensor
 {
-    public int idSensor;
+    public string idSensor;
     public Data dataSensor;
     public string nameSensor;
 }
